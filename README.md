@@ -8,6 +8,8 @@ Then you need to install virtualenv,
 
 ```pip install virtualenv```
 
+## Open a terminal...
+
 ## Now create a directory to work in:
 
 ```mkdir c:\fixsteamicons```
