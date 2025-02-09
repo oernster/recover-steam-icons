@@ -45,5 +45,5 @@ Then you need to install virtualenv,
 
 # NOTE
 
-## This is not perfect and some icons will still not be created potentially if the game titles have unusual exe names or strange subdirectory paths but it the script will do it's best.
+## Some icons _may_ not be created if the game titles have unusual exe names or strange subdirectory paths; the script should do a solid job of 99% of your game titles though.
 
