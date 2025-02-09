@@ -1,14 +1,22 @@
 # A single unified Python script to perform the operation of recovering your lost Steam icons using the SteamCMD tool (command line Steam API).
 
-You need to install SteamCMD from here and locate it in c:\SteamCMD: https://developer.valvesoftware.com/wiki/SteamCMD
+# First clone this repository:
 
-First, install Python latest (3 of some variety) from https://www.python.org
+## Install git from here: https://git-scm.com/downloads/win
+
+## You need to install SteamCMD from here and locate it in c:\SteamCMD: https://developer.valvesoftware.com/wiki/SteamCMD
+
+## Install Python latest (3 of some variety) from https://www.python.org
+
+## Open a terminal...
+
+Enter the command...
+
+```git clone https://github.com/oernster/recover-steam-icons.git```
 
 Then you need to install virtualenv, 
 
 ```pip install virtualenv```
-
-## Open a terminal...
 
 ## Now create a directory to work in:
 
