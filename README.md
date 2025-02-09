@@ -28,7 +28,7 @@ Then you need to install virtualenv,
 
 ## Install dependencies:
 
-```pip install pillow pywin32 fuzzywuzzy python-Levenshtein```
+```pip install -r requirements.txt```
 
 ## Run Python script to perform a best effort attempt to recover your icons.
 
