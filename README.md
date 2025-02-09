@@ -1,5 +1,6 @@
 # A single unified Python script to perform the operation of recovering your lost Steam icons using the SteamCMD tool (command line Steam API).
 # If icons already exist as shortcuts or steam urls on your desktop then they will not be duplicated.
+## Soundtrack icons are avoided.
 
 # First clone this repository:
 
