@@ -1,12 +1,22 @@
-# A single unified Python script to perform the operation of recovering your lost Steam icons using the SteamCMD tool (command line Steam API).
-# If icons already exist as shortcuts or steam urls on your desktop then they will not be duplicated.
-## Soundtrack icons are avoided.
+# Recover missing Steam desktop icons (without duplicates)
+
+This repository contains a single Python script that scans your Steam libraries
+and ensures each installed game has a **Desktop shortcut**.
+
+Key behavior:
+
+- Creates **Windows `.lnk` shortcuts** (reliable launching + icons).
+- Launches games via **Steam appid** using `steam.exe -applaunch <appid>`.
+- Avoids duplicates by detecting existing Desktop shortcuts by **appid**.
+- Skips common noise entries like *soundtracks* and *Steamworks Common Redistributables*.
 
 # First clone this repository:
 
 ## Install git from here: https://git-scm.com/downloads/win
 
-## You need to install SteamCMD from here and locate it in c:\SteamCMD: https://developer.valvesoftware.com/wiki/SteamCMD
+## SteamCMD is not required
+
+Older versions of this project referenced SteamCMD; the current script does **not** use SteamCMD.
 
 ## Install Python latest (3 of some variety) from https://www.python.org
 
@@ -36,16 +46,79 @@ Then you need to install virtualenv,
 
 ```venv\scripts\activate```
 
-## Install dependencies:
+## Install dependencies (ALWAYS in a venv)
 
-```pip install -r requirements.txt```
+From the repo root:
 
-## Run Python script to perform a best effort attempt to recover your icons.
+```powershell
+python -m venv venv
+```
 
-```python steamfixicons.py```
+Activate it:
+
+```powershell
+venv\Scripts\Activate.ps1
+```
+
+Then install:
+
+```powershell
+python -m pip install -r requirements.txt
+```
+
+## Run
+
+```powershell
+python .\steamfixicons.py
+```
+
+### Useful options
+
+- Preview what would be created (does not write files):
+
+```powershell
+python .\steamfixicons.py --dry-run --verbose
+```
+
+- If Steam is installed in a non-standard location:
+
+```powershell
+python .\steamfixicons.py --steam-path "D:\Steam"
+```
+
+- If you want to write shortcuts to a different folder:
+
+```powershell
+python .\steamfixicons.py --desktop "C:\Users\Oliver\Desktop"
+```
+
+- Fix icons for shortcuts that already exist (without creating/removing any shortcuts):
+
+```powershell
+python .\steamfixicons.py --repair-icons
+```
+
+- Fix a single game (example: Noita appid 881100):
+
+```powershell
+python .\steamfixicons.py --repair-icons --only-appid 881100
+```
 
 
 # NOTE
 
-## Some icons _may_ not be created if the game titles have unusual exe names or strange subdirectory paths; the script should do a solid job of 99% of your game titles though.
+## Notes / troubleshooting
+
+- If you see `ModuleNotFoundError: No module named 'win32com'`, your **venv** is missing `pywin32`.
+  Make sure the venv is activated (your prompt should show `(venv)`), then re-run:
+
+```powershell
+python -m pip install -r requirements.txt
+```
+
+- Icons are chosen in this order:
+  1) Steam cached `.ico` files (if available)
+  2) Convert Steam cached artwork to an `.ico` (requires Pillow)
+  3) A “best guess” main game `.exe`
+  4) Steam's icon as a fallback
 
