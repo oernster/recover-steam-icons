@@ -112,7 +112,12 @@ def _get_desktop_path() -> Path:
         desktop_guid = _guid_from_string(folderid_desktop)
         ppath = ctypes.c_wchar_p()
         # SHGetKnownFolderPath(FOLDERID, flags, token, outPath)
-        if shell32.SHGetKnownFolderPath(ctypes.byref(desktop_guid), 0, 0, ctypes.byref(ppath)) != 0:
+        if (
+            shell32.SHGetKnownFolderPath(
+                ctypes.byref(desktop_guid), 0, 0, ctypes.byref(ppath)
+            )
+            != 0
+        ):
             raise OSError("SHGetKnownFolderPath failed")
         try:
             if not ppath.value:
@@ -144,7 +149,9 @@ def _parse_libraryfolders_paths(vdf_text: str) -> list[Path]:
     """
 
     paths: list[Path] = []
-    for match in re.finditer(r'"path"\s+"(?P<path>[^"]+)"', vdf_text, flags=re.IGNORECASE):
+    for match in re.finditer(
+        r'"path"\s+"(?P<path>[^"]+)"', vdf_text, flags=re.IGNORECASE
+    ):
         raw = match.group("path")
         raw = raw.replace("\\\\", "\\")
         p = Path(raw)
@@ -187,7 +194,9 @@ def get_steam_library_steamapps_paths(steam_install_path: Path) -> list[Path]:
 
 def _parse_acf_value(acf_text: str, key: str) -> Optional[str]:
     # Simple tolerant matcher:  "key"  "value"
-    m = re.search(rf'"{re.escape(key)}"\s+"(?P<value>.*?)"', acf_text, flags=re.IGNORECASE)
+    m = re.search(
+        rf'"{re.escape(key)}"\s+"(?P<value>.*?)"', acf_text, flags=re.IGNORECASE
+    )
     if not m:
         return None
     return m.group("value")
@@ -458,7 +467,9 @@ def create_desktop_shortcuts(
     if verbose:
         print(f"Desktop: {desktop}")
         print(f"Steam:   {steam_install_path}")
-        print(f"Found {len(existing_appids)} existing Steam shortcuts on Desktop (appid-based).")
+        print(
+            f"Found {len(existing_appids)} existing Steam shortcuts on Desktop (appid-based)."
+        )
 
     import win32com.client
 
@@ -518,7 +529,9 @@ def create_desktop_shortcuts(
             skipped_noicon += 1
 
         if verbose:
-            install_path_display = str(app.install_path) if app.install_path.exists() else "<missing>"
+            install_path_display = (
+                str(app.install_path) if app.install_path.exists() else "<missing>"
+            )
             print(f"+ {app.name} [{app.appid}]  install={install_path_display}")
 
         if dry_run:
@@ -548,7 +561,11 @@ def create_desktop_shortcuts(
 
 def _parse_args(argv: list[str]) -> argparse.Namespace:
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--dry-run", action="store_true", help="Do not write shortcuts; only print actions.")
+    p.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Do not write shortcuts; only print actions.",
+    )
     p.add_argument("--verbose", action="store_true", help="Print details for each app.")
     p.add_argument(
         "--repair-icons",
@@ -578,7 +595,11 @@ def main(argv: Optional[list[str]] = None) -> int:
     _preflight_or_exit()
     args = _parse_args(list(sys.argv[1:] if argv is None else argv))
 
-    steam_install_path = Path(args.steam_path) if args.steam_path else _get_steam_install_path_from_registry()
+    steam_install_path = (
+        Path(args.steam_path)
+        if args.steam_path
+        else _get_steam_install_path_from_registry()
+    )
     if not steam_install_path:
         # last resort: common default
         steam_install_path = Path(r"C:\Program Files (x86)\Steam")
